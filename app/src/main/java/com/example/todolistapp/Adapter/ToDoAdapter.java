@@ -63,10 +63,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        CheckBox task;
+        CheckBox chk;
         ViewHolder(View view){
             super(view);
-            task = view.findViewById(R.id.todoCheckBox);
+            chk = view.findViewById(R.id.todoCheckBox);
+
         }
     }
 
@@ -79,15 +80,28 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         ToDoModel item = todoList.get(position);
 
         //important
-        holder.task.setText(item.getTask());
-        holder.task.setChecked(toBoolean(item.getStatus()));
-        holder.task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.chk.setText(item.getTask());
+        if(item.getStatus() == 1){
+            holder.chk.setChecked(false);
+        }else{
+            holder.chk.setChecked(false);
+        }
+        holder.chk.setChecked(toBoolean(item.getStatus()));
+
+
+        holder.chk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+
                     db.updateStatus(item.getId(), 1);
+                    ViewHolder h = new ViewHolder(buttonView);
+                    h.chk.setChecked(toBoolean(1));
                 }else{
+
                     db.updateStatus(item.getId(), 0);
+                    ViewHolder h = new ViewHolder(buttonView);
+                    h.chk.setChecked(toBoolean(0));
                 }
             }
         });
@@ -95,7 +109,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     //Helper function since ToDoModel.setChecked() returns 0 or 1 in onBindViewHolder()
     private boolean toBoolean(int n){
-        return n != 0;
+       if(n == 1){
+           return true;
+       }else if (n == 0){
+           return false;
+       }
+        return false;
     }
 
     //RecyclerView calls to get the size of the data set (helpful for it to know if no more can be displayed)

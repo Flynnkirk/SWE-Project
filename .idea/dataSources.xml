@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="toDoListDatabase" uuid="426d1cc7-cae3-40b8-ba15-5cf512ada6fc">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\tomfl\AppData\Local\JetBrains\IntelliJIdea2022.2\device-explorer\Pixel_2_API_30 [emulator-5554]\data\data\com.example.todolistapp\databases\toDoListDatabase</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

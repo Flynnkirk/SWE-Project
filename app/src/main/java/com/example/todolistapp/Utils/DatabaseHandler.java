@@ -71,9 +71,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Putting task key/value pair into cv.
         cv.put(TASK, task.getTask());   // getting task string contents from the task object
         // (Use case story fulfilled) - setting box to unchecked if new.
-        cv.put(STATUS, 0);
+        cv.put(STATUS, task.getStatus());
         // Inserting task into DB table
         db.insert(TODO_TABLE, null, cv); // method returns ID for newly created row. It also puts information from content values into DB
+
     }
 
     // Method to retrieve all DB tasks and place them into an ArrayList to be shown in MainActivity RecyclerView
@@ -117,7 +118,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Placing cv to store status (to later send to DB)
         cv.put(STATUS, status);
         // Updating the local DB with cv value (Status of 0 or 1) WHERE there is the id passed as parameter (id converted from int to String, so it can be sent).
-        db.update(TODO_TABLE, cv, ID + "=?", new String[] {String.valueOf(id)});
+        db.update(TODO_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
 
     }
 
@@ -126,13 +127,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void updateTask(int id, String task){
         ContentValues cv = new ContentValues();
         cv.put(TASK, task);
-        db.update(TODO_TABLE, cv, ID + "=?", new String[] {String.valueOf(id)});
+        db.update(TODO_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
+        updateStatus(id, 0);
     }
 
 
     // (Use case story fulfilled) Ability to delete a task in code. We delete the task id to delete the task.
     public void deleteTask(int id){
-        db.delete(TODO_TABLE, ID + "=?", new String[] {String.valueOf(id)});
+        db.delete(TODO_TABLE, ID + "= ?", new String[] {String.valueOf(id)});
     }
 
 

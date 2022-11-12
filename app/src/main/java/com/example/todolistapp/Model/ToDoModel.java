@@ -4,7 +4,7 @@ public class ToDoModel {
     //Defining model variables
     //Task attributes are id, status, and task which are to be placed in the DB
     private int id;        // DB identifier
-    private int status;    // 0 (not done) or 1 (done)
+    private int status = 0;    // 0 (not done) or 1 (done)
     private String task;   //text of task
 
 

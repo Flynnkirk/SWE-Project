@@ -56,6 +56,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
         // Initializing variables
         newTaskText = getView().findViewById(R.id.newTaskText);   // Calls EditText fom new_task.xml
         newTaskSaveButton = getView().findViewById(R.id.newTaskTextButton); // Calls Button from new_task.xml to allow saving of added task.
+        newTaskSaveButton.setEnabled(false);
         db = new DatabaseHandler(getActivity()); // Passes context to handler.
         db.openDatabase(); // Opens/creates DB in handler class.
 
@@ -69,6 +70,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
             newTaskText.setText(task);
             if (task.length() > 0)
                 newTaskSaveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));           // Calling new_task.xml color for Button.
+
         }
 
         // Creating listeners for newTaskText and newTaskSaveButton
@@ -76,14 +78,14 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // NOT NEEDED FROM ABSTRACT CLASS
+
             }
 
             @Override
             // Check if the task is empty or not
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
                 // If string is empty we can't save it to DB (We don't want errors) - tested this!
-                if (s.toString().equals("")) {
+                if (s.toString().equals("") || s.toString().equals(" ") || s.toString().isEmpty()) {
                     // Making the Save button unusable and grey.
                     newTaskSaveButton.setEnabled(false);
                     newTaskSaveButton.setTextColor(Color.DKGRAY);
@@ -109,16 +111,23 @@ public class AddNewTask extends BottomSheetDialogFragment {
             // Update task or create new
                 // Getting text entered to pass to Save Button and database.
                 String text = newTaskText.getText().toString();
+
                 // if the task exists / = 1
-                if(finalIsUpdated){
+                if(finalIsUpdated && newTaskSaveButton.isClickable()){      // Graying out Save if there is not any text.
                     // Updating existing task in DB with Save.
                     db.updateTask(bundle.getInt("id"),text);    // Finds bundle key-value pair of the task text string.
-                }else{
+
+
+                }else if (newTaskSaveButton.isClickable()){
                     // Creating task object in DB with Save.
                     ToDoModel task = new ToDoModel();
                     task.setTask(text);
                     task.setStatus(0);
                     db.insertTask(task);
+
+                }else{
+                    ToDoModel task = new ToDoModel();
+                    task.setStatus(0);
                 }
                 // Getting rid of the bottom pop-up fragment.
                 dismiss();
@@ -132,7 +141,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
     public void onDismiss(DialogInterface dialog){
         Activity activity = getActivity();                  // Getting parent activity
         if (activity instanceof DialogCloseListener){       // Seeing if activity is an instance of the DialogCloseListener (refreshes/updates Recyclerview).
-            // If the activity implements DialogCloseLister...
+            // If the activity implements DialogCloseListener...
             ((DialogCloseListener)activity).handleDialogClose(dialog);
         }
     }
