@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private List<ToDoModel> taskList;
     private DatabaseHandler db; // DB variable to be used.
 
+    private FloatingActionButton pickDateButton;          // Defining Button variable so when clicked, we look at calendar.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

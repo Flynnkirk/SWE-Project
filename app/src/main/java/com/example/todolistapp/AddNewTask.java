@@ -1,18 +1,27 @@
 package com.example.todolistapp;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.content.ContextCompat;
 import com.example.todolistapp.Model.ToDoModel;
 import com.example.todolistapp.Utils.DatabaseHandler;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 
 // Class to add tasks to the To Do List
 // A bottom sheet is a pop-up box at the bottom of the screen.
@@ -23,7 +32,9 @@ public class AddNewTask extends BottomSheetDialogFragment {
     // EditText is a UI element for
     private EditText newTaskText;
     private Button newTaskSaveButton;
-    private DatabaseHandler db;                                                       //DB
+    private DatabaseHandler db;
+    private Button addDate;
+
 
 
     public static AddNewTask newInstance(){
@@ -59,6 +70,34 @@ public class AddNewTask extends BottomSheetDialogFragment {
         newTaskSaveButton.setEnabled(false);
         db = new DatabaseHandler(getActivity()); // Passes context to handler.
         db.openDatabase(); // Opens/creates DB in handler class.
+
+        addDate = getView().findViewById(R.id.btnAdd);
+
+
+
+
+
+
+        addDate.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                if(!newTaskText.getText().toString().isEmpty()) {
+                    Intent intent = new Intent(Intent.ACTION_INSERT);
+                    intent.setData(CalendarContract.Events.CONTENT_URI);
+                    intent.putExtra(CalendarContract.Events.TITLE, newTaskText.getText().toString());
+                    intent.putExtra(CalendarContract.Events.ALL_DAY, "true");
+
+                   try{
+                       startActivity(intent);
+                   } catch (Exception e) {
+                       Toast.makeText(view.getContext(), "These is no app that can support this action", Toast.LENGTH_SHORT).show();
+
+                   }
+
+                } else {
+                    Toast.makeText(view.getContext(), "Please Fill Out New Task Text", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         // Differentiation between saving of new task and updating of an existing task.
         boolean isUpdated = false;
