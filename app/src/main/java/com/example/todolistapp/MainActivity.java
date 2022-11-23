@@ -1,10 +1,17 @@
 package com.example.todolistapp;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.todolistapp.Adapter.ToDoAdapter;
@@ -17,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements DialogCloseListener {
+public class MainActivity extends AppCompatActivity implements DialogCloseListener, AdapterView.OnItemSelectedListener {
 
     //Variables to help with the RecyclerView. RecyclerView renders data.
     private RecyclerView tasksRecyclerView;
@@ -30,6 +37,12 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Spinner spinner = findViewById(R.id.spinner1);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.days, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
         //Removing the navigation bar from screen top
         Objects.requireNonNull(getSupportActionBar()).hide();
 
@@ -48,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         fab = findViewById(R.id.fab);                        // Button when clicked adds a task.
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(tasksAdapter));
+        itemTouchHelper.attachToRecyclerView(tasksRecyclerView);            // Defining itemTouchHelper (for swipe functioning)
+
         taskList = db.getAllTasks();   // Getting all tasks from DB
         Collections.reverse(taskList); // Getting the newest tasks first
         tasksAdapter.setTasks(taskList);
@@ -59,9 +75,40 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                                         DeliverBottomFragment();
                                    }
                                });
-        onEntry();
+        //Triggers dialog box on first entrance to app only
+        if(savedInstanceState == null) {
+            onEntry();
+        }
 
     }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+        String text = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(),text,Toast.LENGTH_SHORT).show();
+        System.out.println("Position" + position);
+        if(position == 1) {
+            AppCompatDelegate
+                    .setDefaultNightMode(
+                            AppCompatDelegate
+                                    .MODE_NIGHT_YES);
+
+
+
+        }else{
+            AppCompatDelegate
+                    .setDefaultNightMode(
+                            AppCompatDelegate
+                                    .MODE_NIGHT_NO);
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        // Not needed
+    }
+
+
 
     @Override
     public void handleDialogClose(DialogInterface dialog) {
@@ -106,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
     public void onEntry(){
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage("Do you want to add a task ?");
         builder.setTitle("Welcome !");
@@ -131,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     public void DeliverBottomFragment(){
         AddNewTask.newInstance().show(getSupportFragmentManager(), AddNewTask.TAG);
     }
-
 
 
 
