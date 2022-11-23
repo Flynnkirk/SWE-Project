@@ -62,9 +62,40 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                                         DeliverBottomFragment();
                                    }
                                });
-        onEntry();
+        //Triggers dialog box on first entrance to app only
+        if(savedInstanceState == null) {
+            onEntry();
+        }
 
     }
+    
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+        String text = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(),text,Toast.LENGTH_SHORT).show();
+        System.out.println("Position" + position);
+        if(position == 1) {
+            AppCompatDelegate
+                    .setDefaultNightMode(
+                            AppCompatDelegate
+                                    .MODE_NIGHT_YES);
+
+
+
+        }else{
+            AppCompatDelegate
+                    .setDefaultNightMode(
+                            AppCompatDelegate
+                                    .MODE_NIGHT_NO);
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        // Not needed
+    }
+
 
     @Override
     public void handleDialogClose(DialogInterface dialog) {
