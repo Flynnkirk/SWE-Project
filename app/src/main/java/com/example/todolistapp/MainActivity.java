@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         tasksRecyclerView = findViewById(R.id.tasksRecyclerView);
         //Defining a linear, 1D list for the dynamic RecyclerView list
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        tasksAdapter = new ToDoAdapter(db,MainActivity.this);
+        tasksAdapter = new ToDoAdapter(db, MainActivity.this);
         //Setting the adapter for the RecyclerView is important to render adapter-based views
         tasksRecyclerView.setAdapter(tasksAdapter);
 
@@ -64,37 +64,38 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(tasksAdapter));
         itemTouchHelper.attachToRecyclerView(tasksRecyclerView);            // Defining itemTouchHelper (for swipe functioning)
 
+
         taskList = db.getAllTasks();   // Getting all tasks from DB
         Collections.reverse(taskList); // Getting the newest tasks first
         tasksAdapter.setTasks(taskList);
 
 
         fab.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View view) {
-                                        DeliverBottomFragment();
-                                   }
-                               });
+            @Override
+            public void onClick(View view) {
+                DeliverBottomFragment();
+            }
+        });
         //Triggers dialog box on first entrance to app only
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             onEntry();
         }
 
     }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
         String text = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(),text,Toast.LENGTH_SHORT).show();
+        Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
         System.out.println("Position" + position);
-        if(position == 1) {
+        if (position == 1) {
             AppCompatDelegate
                     .setDefaultNightMode(
                             AppCompatDelegate
                                     .MODE_NIGHT_YES);
 
 
-
-        }else{
+        } else {
             AppCompatDelegate
                     .setDefaultNightMode(
                             AppCompatDelegate
@@ -107,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     public void onNothingSelected(AdapterView<?> adapterView) {
         // Not needed
     }
-
 
 
     @Override
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     }
 
 
-    public void onEntry(){
+    public void onEntry() {
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -171,15 +171,11 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     }
 
 
-
-
-
-
-
-    public void DeliverBottomFragment(){
+    public void DeliverBottomFragment() {
         AddNewTask.newInstance().show(getSupportFragmentManager(), AddNewTask.TAG);
     }
-
-
-
 }
+
+
+
+
