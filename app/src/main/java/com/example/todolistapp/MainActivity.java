@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
 
         fab = findViewById(R.id.fab);                        // Button when clicked adds a task.
+        
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(tasksAdapter));
+        itemTouchHelper.attachToRecyclerView(tasksRecyclerView);            // Defining itemTouchHelper (for swipe functioning)
 
         taskList = db.getAllTasks();   // Getting all tasks from DB
         Collections.reverse(taskList); // Getting the newest tasks first
