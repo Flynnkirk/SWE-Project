@@ -50,9 +50,20 @@
         android:backgroundTint="@android:color/holo_orange_dark"
         android:src="@drawable/ic_baseline_add" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/v2t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="@android:color/holo_orange_dark"
+            android:src="@drawable/ic_baseline_mic" />
 
-
-    <!--Here we create button at the bottom right of the screen which floats-->
+   
 
 
 
