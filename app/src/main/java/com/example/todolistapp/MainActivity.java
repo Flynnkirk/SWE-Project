@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private RecyclerView tasksRecyclerView;
     private ToDoAdapter tasksAdapter;
     private FloatingActionButton fab;          // Defining Button variable so when clicked, we can add a task.
+    private FloatingActionButton v2t;          // Voice to text button (Sprint 3)
     private List<ToDoModel> taskList;
     private DatabaseHandler db; // DB variable to be used.
 
@@ -60,11 +61,19 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
 
         fab = findViewById(R.id.fab);                        // Button when clicked adds a task.
+        v2t = findViewById(R.id.v2t);                        // Voice to text (Sprint 3)
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(tasksAdapter));
         itemTouchHelper.attachToRecyclerView(tasksRecyclerView);            // Defining itemTouchHelper (for swipe functioning)
+        
+        // Code which fetches voice to text speech to add a new task out of it (Sprint 3)
 
-
+        Intent intent = getIntent();
+        String text = intent.getStringExtra("Spoken Text");
+        System.out.println("text: " + text);
+        addVoice2TextTask(text);
+        
+       
         taskList = db.getAllTasks();   // Getting all tasks from DB
         Collections.reverse(taskList); // Getting the newest tasks first
         tasksAdapter.setTasks(taskList);
@@ -80,9 +89,26 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         if (savedInstanceState == null) {
             onEntry();
         }
+        
+        // (Sprint 3)
+        v2t.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openActivity2();
+            }
+        });
 
     }
+    
+    // Method for voice to text (Sprint 3)
 
+    public void openActivity2() {
+        Intent intent = new Intent(this, Activity2.class);
+        startActivity(intent);
+    }
+    
+    
+    
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
         String text = parent.getItemAtPosition(position).toString();
@@ -174,6 +200,20 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     public void DeliverBottomFragment() {
         AddNewTask.newInstance().show(getSupportFragmentManager(), AddNewTask.TAG);
     }
+    
+    
+    // (Sprint 3)
+    public void addVoice2TextTask(String text) {
+
+        if (text != null) {
+
+            ToDoModel task = new ToDoModel();
+            task.setTask(text);
+            task.setStatus(0);
+            db.insertTask(task);
+        }
+    }
+    
 }
 
 
