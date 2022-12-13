@@ -6,6 +6,7 @@
 
 Enter into ```app```, to ```src```, then to ```main```.
 
+The ```res``` folder holds resources for this project. Notable folders include ```drawable```, ```layout```, and ```values```.
 
 
 
