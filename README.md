@@ -12,12 +12,12 @@ The ```java/com/example/todolistapp``` package contains all relevant classes per
  * ```MainActivity.java``` is a class that provides the window in which the app draws its UI. It is the most important file, being the control center of the app.
  * ```Activity2.java``` is class that provides the second window which is used for voice-to-text
  * ```SplashActivity.java``` is a class that provides a brief window to introduce the application. It is shown for one second.
- * ```AddNewTask.java```
- * ```RecyclerItemTouchHelper.java```
- * ```DialogCloseListener.java```
- * Under the ```Utils``` package, ```DatabaseHandler.java```
- * Under the ```Models``` package, ```ToDoModel.java```
- * Under the ```Adapter``` package, ```ToDoAdapter.java```
+ * ```AddNewTask.java``` is a class that delivers a dialog fragment which appears at the bottom of the screen when adding a task. It includes logic for the save button and the calendar.
+ * ```RecyclerItemTouchHelper.java``` is a class that helps with the edit and delete swiping functionality.
+ * ```DialogCloseListener.java``` is an interface that handles whenever a dialog box closes. It is used in the MainActivity to refresh the screen after changes.
+ * Under the ```Utils``` package, ```DatabaseHandler.java``` is a class which extends SQLite functionalities. It managed DB creation and version management. It also includes methods for adding tasks, updating them, and deleting them.
+ * Under the ```Models``` package, ```ToDoModel.java``` is a class that defines the task attributes of ID, status, and task, which encapsulated in a ToDoModel object, can be added to lists and the SQLite database.
+ * Under the ```Adapter``` package, ```ToDoAdapter.java``` is a class tbat provides a binding from the data set to views in RecyclerView. The adapter guides the way information is shown in UI.
 
 
 
